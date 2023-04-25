@@ -2,7 +2,7 @@
  * SORTING NODES WITHIN A CONTAINER
  * Please, make sure to read the following files in the exercises-info folder before you start
  * * 01 SelectNodes.md
-*/
+ */
 
 /**
  * @task
@@ -10,10 +10,7 @@
  * Store them in the allItems variable
  * Example: const allItems = <Your code>;
  */
-
-// Your code goes here...
-
-
+const allItems = document.querySelectorAll(".item");
 
 /**
  * @task
@@ -22,9 +19,7 @@
  * Example: const main = <Your code>
  * */
 
-// Your code goes here
-
-
+const main = document.getElementById("main");
 
 /**
  * @task
@@ -33,9 +28,7 @@
  * Example: const favs = <Your code>;
  */
 
-// Your code goes here
-
-
+const favs = document.getElementById("favs");
 
 /**
  * @task
@@ -46,9 +39,26 @@
  * Changes the icon of the element: fa-heart-circle-plus for main, fa-heart-crack for favs items.
  */
 
-// Your code goes here
+function updateCollections(id, direction) { 
+  let item = document.getElementById(id);
+  let oldParent = item.parentNode;
+  let newParent;
 
+  if (direction === "toMain") {
+    newParent = document.getElementById("main");
+    item.querySelector("i").classList.remove("fa-heart-crack");
+    item.querySelector("i").classList.add("fa-heart-circle-plus");
+  } else if (direction === "toFavs") {
+    newParent = document.getElementById("favs");
+    item.querySelector("i").classList.remove("fa-heart-circle-plus");
+    item.querySelector("i").classList.add("fa-heart-crack");
+  } else {
+    console.error("Invalid direction: " + direction);
+    return;
+  }
 
+  newParent.appendChild(item);
+}
 
 /**
  * @task
@@ -64,6 +74,18 @@
  * * Make the updateCollections function call, assign the item Id and the direction defined above
  */
 
-// Your code goes here...
+allItems.forEach((item) => {
+  item.addEventListener("click", () => {
+    const itemId = Number(item.id);
+    const itemParentId = item.parentNode.id;
+    let direction;
 
+    if (itemParentId === "main") {
+      direction = "toFavs";
+    } else if (itemParentId === "favs") {
+      direction = "toMain";
+    }
 
+    updateCollections(itemId, direction);
+  });
+});
